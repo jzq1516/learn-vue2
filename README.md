@@ -35,12 +35,12 @@
 	 使用方式:  
 			第一步定义混合，例如:  
       ```
-      {
-        data() {...},
-        methods: {...}
-        ...
-      }
-      ```
+      {  
+        data() {...},  
+        methods: {...}  
+        ...  
+      }  
+      ```  
 			第二步使用混入，例如:  
 				(1). 全局混入: Vue.mixin(xxx)  
 				(2). 局部混入: mixin:['xxx']  
@@ -49,18 +49,20 @@
    功能: 用于增强Vue  
 	 本质: 包含install方法的一个对象，install的第一个参数是Vue，第二个以后的参数是插件使用者传递的数据  
 	 定义插件:  
-			对象.install = function(Vue, options) {  
+			```
+      对象.install = function(Vue, options) {  
 				// 1. 添加全局过滤器  
 				Vue.filter(....)  
-				// 2. 添加全局指令  
+        // 2. 添加全局指令  
 				Vue.directive(....)  
 				// 3. 配置全局混入(合)  
 				Vue.mixin(...)  
 				// 4. 添加实例方法  
 				Vue.prototype.$myMethod = function() {...}  
 				Vue.prototype.$myProperty = xxx  
-			}
-			使用插件: Vue.use()  
+			}  
+      ```  
+    使用插件: Vue.use()  
 			
 ## scoped样式  
    作用：让样式在局部生效，防止冲突  
@@ -85,15 +87,15 @@
   1.一种组件间通信的方式，适用于：子组件===>父组件          
   2.使用场景：A是父组件，B是子组件，B想给A传数据，那么就要在A中给B绑定自定义事件（事件的回调在A中）。              
   3.绑定自定义事件：  
-    (1).第一种方式，在父组件中：<Demo @atguigu="test"/> 或 <Demo v-on:atguigu="test"/>   
+    (1).第一种方式，在父组件中：`<Demo @atguigu="test"/>` 或 `<Demo v-on:atguigu="test"/>`   
     (2).第二种，在父组件中：  
       ```
-      <Demo ref="demo">
-        ......
-      mounted() {
-        this.$refs.xxx.$on('atguigu', this.test)
-      }
-      ```
+      <Demo ref="demo">  
+      ......  
+      mounted() {  
+        this.$refs.xxx.$on('atguigu', this.test)  
+      }  
+      ```  
     (3).若想让自定义事件只能触发一次，可以使用once修饰符，或$once方法。  
   4.触发自定义事件：this.$emit('atguigu', 数据)  
   5.解绑自定义事件：this.$off('atguigu')  
@@ -104,24 +106,24 @@
    1.一种组件间通信的方式，适用于任意组件间通信  
    2.安装全局事件总线：  
     ```
-    new Vue({
-      .....
-      beforeCreate() {
-        Vue.prototype.$bus = this // 安装全局事件总线，$bus就是当前应用的vm
-      },
-      .....
-    })
-    ```
+    new Vue({  
+      .....  
+      beforeCreate() {  
+        Vue.prototype.$bus = this // 安装全局事件总线，$bus就是当前应用的vm  
+      },  
+      .....  
+    })  
+    ```  
    3.使用事件总线：  
     (1).接收数据：A组件想接收数据，则在A组件中给$bus绑定自定义事件，事件的回调留在A组件自身。  
      ```
-      methods: {
-        demo(data) {......}
-      }
-      ........
-      mounted() {
-        this.$bus.$on('xxxx', this.demo)
-      }
-     ```
+      methods: {  
+        demo(data) {......}  
+      }  
+      ........  
+      mounted() {  
+        this.$bus.$on('xxxx', this.demo)  
+      }  
+     ```  
     (2).提供数据：this.$bus.$emit('xxxx',数据)  
     4.最好在beforeDestroy钩子中，用$off去解绑当前组件所用到的事件  
