@@ -1,68 +1,30 @@
 <template>
-  <div class="todo-wrap">
-  	<MyHeader :addTodo="addTodo"/>
-  	<MyList :todos="todos" :checkTodo="checkTodo" :deleteTodo="deleteTodo"/>
-  	<MyFooter :todos="todos" :checkAllTodo="checkAllTodo" :clearAllTodo="clearAllTodo"/>
+  <div class="app">
+    <h2>{{msg}}</h2>
+    <School/>
+    <Student/>
   </div>
 </template>
 
 <script>
   // 引入组件
-	import MyHeader from './components/MyHeader.vue'
-	import MyList from './components/MyList.vue'
-	import MyFooter from './components/MyFooter.vue'
+  import School from './components/School.vue';
+  import Student from './components/Student.vue';
 
   export default {
     name: 'App',
-    components: {
-			MyHeader,
-			MyList,
-			MyFooter
-		},
-		data() {
-			return {
-				todos: [
-					{id:'001', title: '吃饭', done: true},
-					{id:'002', title: '睡觉', done: false},
-					{id:'003', title: '打游戏', done: true}
-				]
-			}
-		},
-		methods: {
-			addTodo(todoObj) {
-				this.todos.unshift(todoObj)
-			},
-			checkTodo(id) {
-				this.todos.forEach((item)=>{
-					if (item.id === id) {
-						item.done = !item.done
-					}
-				})
-			},
-			deleteTodo(id) {
-				this.todos = this.todos.filter(todo => todo.id != id)
-			},
-			checkAllTodo(done) {
-				this.todos.forEach(todo=>todo.done = done)
-			},
-			clearAllTodo() {
-				this.todos = this.todos.filter(todo=>!todo.done)
-			}
-		}
+    components: {School,Student},
+    data() {
+      return {
+        msg: '你好啊！'
+      }
+    }
   }
 </script>
 
-<style type="text/css">
-	* {
-		margin: 0;
-		padding: 0;
-	}
-	
-	.todo-wrap {
-		width: 600px;
-		margin: 20px auto 0;
-		border: 1px solid #ccc;
-		border-radius: 8px;
-		padding-bottom: 20px;
-	}
+<style>
+  .app {
+    background-color: gray;
+    padding: 5px;
+  }
 </style>
