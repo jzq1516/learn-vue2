@@ -13,12 +13,15 @@
 				第一种方式（只接收）:
 					`props: ['name']`
 				第二种方式（限制类型）:
+        
 					```
           props: {
 						name: String
 					}
           ```
+          
 				第三种方式（限制类型、限制必要性、指定默认值）:
+        
 					```
           props: {
 						name: {
@@ -28,12 +31,14 @@
 						}
 					}
           ```
+          
 		备注: props是只读的，Vue底层监测你对props的修改，如果进行了修改，就会发出警告，
 		若业务需求确实需要修改，那么请复制props的内容到data中一份，然后去修改data中的数据。
 ## mixin(混入)		
    功能: 可以把多个组件共用的配置提取成一个混入对象  
 	 使用方式:  
 			第一步定义混合，例如:  
+
       ```
       {  
         data() {...},  
@@ -41,6 +46,7 @@
         ...  
       }  
       ```  
+
 			第二步使用混入，例如:  
 				(1). 全局混入: Vue.mixin(xxx)  
 				(2). 局部混入: mixin:['xxx']  
@@ -49,6 +55,7 @@
    功能: 用于增强Vue  
 	 本质: 包含install方法的一个对象，install的第一个参数是Vue，第二个以后的参数是插件使用者传递的数据  
 	 定义插件:  
+
 			```
       对象.install = function(Vue, options) {  
 				// 1. 添加全局过滤器  
@@ -62,6 +69,7 @@
 				Vue.prototype.$myProperty = xxx  
 			}  
       ```  
+
     使用插件: Vue.use()  
 			
 ## scoped样式  
@@ -88,7 +96,8 @@
   2.使用场景：A是父组件，B是子组件，B想给A传数据，那么就要在A中给B绑定自定义事件（事件的回调在A中）。              
   3.绑定自定义事件：  
     (1).第一种方式，在父组件中：`<Demo @atguigu="test"/>` 或 `<Demo v-on:atguigu="test"/>`   
-    (2).第二种，在父组件中：  
+    (2).第二种，在父组件中： 
+
       ```
       <Demo ref="demo">  
       ......  
@@ -96,6 +105,7 @@
         this.$refs.xxx.$on('atguigu', this.test)  
       }  
       ```  
+
     (3).若想让自定义事件只能触发一次，可以使用once修饰符，或$once方法。  
   4.触发自定义事件：this.$emit('atguigu', 数据)  
   5.解绑自定义事件：this.$off('atguigu')  
@@ -105,6 +115,7 @@
   ## 全局事件总线（GlobalEventBus）
    1.一种组件间通信的方式，适用于任意组件间通信  
    2.安装全局事件总线：  
+
     ```
     new Vue({  
       .....  
@@ -114,8 +125,10 @@
       .....  
     })  
     ```  
+
    3.使用事件总线：  
     (1).接收数据：A组件想接收数据，则在A组件中给$bus绑定自定义事件，事件的回调留在A组件自身。  
+
      ```
       methods: { 
         demo(data) {......}  
@@ -125,6 +138,7 @@
         this.$bus.$on('xxxx', this.demo)  
       }  
      ```  
+
     (2).提供数据：this.$bus.$emit('xxxx',数据)  
     4.最好在beforeDestroy钩子中，用$off去解绑当前组件所用到的事件  
 
@@ -134,6 +148,7 @@
     (1).安装pubsub：`npm i pubsub-js`  
     (2).引入：`import pubsub from 'pubsub-js'`  
     (3).接收数据：A组件想接收数据，则在A组件中订阅消息，订阅的回调留在A组件自身。  
+
   ```  
   methods: {
     demo(data) {...}
@@ -143,6 +158,7 @@
     this.pid = pubsub.subscribe('xxx', this.demo) // 订阅消息
   }
   ```  
+
   4.提供数据：`pubsub.publish('xxx',数据)`   
   5.最好在beforeDestroy钩子中，用`pubsub.unsubscribe(pid)`去取消订阅。
 ## nextTick
@@ -163,27 +179,32 @@
       ②.v-leave-active：离开过程中  
       ③.v-leave-to：离开的终点  
   (2).使用`<transition>`包裹要过渡的元素，并配置name属性：  
+
   ```
     <transition name="hello" appear>
       <h1 v-show="isShow">你好啊！</h1>
     </transition>
   ```
+
   (3).备注：若有多个元素需要过渡，则需要使用：`<transition-group>`，且每个元素都要指定`key`值。
 
 ## Vue脚手架配置代理
  方法一：  
   在vue.config.js中添加如下配置：  
+  
   ```
   devServer: {
     proxy: "http://localhost:5000"
   }
   ```
+
   说明：  
    1.优点：配置简单，请求资源时直接发给前端（8080）即可。  
    2.缺点：不能配置多个代理，不能灵活的控制请求是否走代理。  
    3.工作方式：若按照上述配置代理，当请求了前端不存在的资源时，那么该请求会转发给服务器（优先匹配前端资源）  
 方法二：  
  编写vue.config.js配置具体代理规则：  
+
  ```
  module.exports = {
    devServer: {
@@ -213,6 +234,7 @@
   changeOrigin默认值为true
  */
  ```   
+
  说明：  
   1.优点：可以配置多个代理，且可以灵活的控制请求是否走代理。
   2.缺点：配置略微繁琐，请求资源时必须加前缀。
@@ -223,12 +245,15 @@
  3.使用方式：
   (1).默认插槽：
    父组件：
+
    ```
     <Category>
       <di>html结构1</di>
     </Category>
     ```
+
    子组件：
+
    ```
     <template>
      <div>
@@ -237,8 +262,10 @@
      </div>
     </template>
   ```
+
   (2).具名插槽：
    父组件：
+
    ```
     <Category>
       <template slot="center">
@@ -250,7 +277,9 @@
       </template>
     </Category>
    ```
+
    子组件：
+
    ```
     <template>
       <div>
@@ -260,11 +289,13 @@
       </div>
     </template>
    ```
+
   3.作用域插槽：
    1.理解：数据在组件的自身，但根据数据生成的结构需要组件的使用者来决定。（games数据在Category组件中，但使用
    数据所遍历出来的结构由App组件决定）
    2.具体编码：
     父组件：
+
     ```
     <Category>
       <template scope="{games}">
@@ -281,7 +312,9 @@
       </template>
     </Category>
     ```
+
     子组件：
+
     ```
     <template slot-scope="games">
       <div>
@@ -302,12 +335,14 @@
     }
     </script>
     ```
+
 ## 1.概念
   在Vue中实现集中式状态（数据）管理的一个Vue插件，对vue应用中多个组件的共享状态进行集中式的管理（读/写），也是一种组件间通信的方式，且适用于任意组件间通信
 ## 2.何时使用？
   多个组件需要共享数据时
 ## 3.搭建vuex环境
   1.创建文件：`src/store/index.js`
+
     ```
     // 引入Vue核心库
     import Vue from 'vue'
@@ -330,7 +365,9 @@
       state
     })
     ```
+
   2. `main.js`中创建vm时传入`store`配置项
+
     ```
     ...
     // 引入store
@@ -344,8 +381,10 @@
       store
     })
     ```
+
 ## 基本使用
   1.初始化数据、配置`actions`、配置`mutations`，操作文件`store.js`
+
   ```
   // 引入Vue核心库
   import Vue from 'vue'
@@ -381,12 +420,14 @@
     state
   })
   ```
+
   2.组件中读取vuex中的数据：`$store.state.sum`
   3.组件中修改vuex的数据：`$store.dispatch('actions中的方法名', 数据)`或`$store.commit('mutations中的方法名', 数据)`
   4.备注：若没有网络请求或其他业务逻辑，组件中也可以越过actions，即不写`dispatch`，直接编写`commit`
   5.getters的使用
    (1).概念：当state中的数据需要经过加工后再使用时，可以使用getters加工。
    (2).在`store.js`中追加`getters`配置
+
    ```
    ......
    const getters = {
@@ -401,7 +442,59 @@
     getters
    })
    ```
+
    (3).组件中读取数据：`$store.getters.bigSum`
+  6.四个map方法的使用
+   (1).mapState方法：用于帮助我们映射`state`中的数据为计算属性
+
+   ```
+   computed: {
+    // 借助mapState生成计算属性，从state中读取数据（对象写法）
+    ...mapState({he: 'sum', xuexiao: 'school', xueke: 'subject'}),
+
+    // 借助mapState生成计算属性，从state中读取数据（数组写法）
+    ...mapState(['sum', 'school', 'subject']),
+   }
+   ```
+
+   (2).mapGetters方法：用于帮助我们映射`getters`中的数据为计算属性
+
+   ```
+   computed: {
+    // 借助mapGetters生成计算属性，从getters中读取数据（对象写法）
+    ...mapGetters({bigSum: 'bigSum'})
+
+    // 借助mapGetters生成计算属性，从getters中读取数据（数组写法）
+    ...mapGetters(['bigSum'])
+   }
+   ```
+
+   (3).mapActions方法：用于帮助我们生成与`actions`对话的方法，即`$store.dispatch(xxx)`的函数
+
+   ```
+   methods: {
+    // 借助mapActions生成对应的方法，方法中会调用dispatch去联系actions（对象写法）
+    ...mapActions({incrementOdd: 'jiaOdd', incrementWait: 'jiaWait'})
+
+    // 借助mapActions生成对应的方法，方法中会调用dispatch去联系actions（数组写法）
+    ...mapActions(['jiaOdd','jiaWait'])
+   }
+
+   ```
+   (4).mapMutations方法：用于帮助我们生成与`mutations`对话的方法，即`$store.commit(xxx)`的函数
+
+   ```
+   methods: {
+    // 借助mapMutations生成对应的方法，方法中会调用commit去联系mutation（对象写法）
+    ...mapMutations({increment: 'JIA', decrement: 'JIAN'}),
+
+    // 借助mapMutations生成对应的方法，方法中会调用commit去联系mutation（数组写法）
+    ...mapMutations(['JIA', 'JIAN']),
+   }
+   ```
+
+   备注：mapActions与mapMutations使用时，若需要传递参数，需要在模板中绑定事件时传递好参数，否则参数是事件对象。
+   
 
 
 
